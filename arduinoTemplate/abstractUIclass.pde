@@ -16,6 +16,12 @@ abstract class UIobject{
   */
   abstract void setValues(float values[]);
   
+  abstract void setValues(int values[]);
+  
+  abstract void setValues(int values);
+  
+  abstract void setValues(float values);
+  
   /**
   * Draws the interactive part 
   * of the UI
@@ -53,6 +59,9 @@ abstract class UIobject{
   * Sets the primary color with R, B, and B values
   */
   abstract void setPrimeColor(int r, int g, int b);
+  abstract void setPrimeColor(float r, float g, float b);
+  
+ 
   
   /**
   * Sets the secondary color of the UI
@@ -67,4 +76,5 @@ abstract class UIobject{
   * Sets the secondary color with R, B, and B values
   */
   abstract void setSecondColor(int r, int g, int b);
+  abstract void setSecondColor(float r, float g, float b);
 }
