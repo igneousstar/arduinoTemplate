@@ -1,20 +1,19 @@
+/**
+* Checks for incoming data
+* then parses incoming data
+*/
+
 void readSerial() {
-  if (myPort.available() > 0) {
+  if (myPort.available() > (dataSize - 1)) {
     dataIn = myPort.readStringUntil('\n');
   } 
-
-  if (str != null) {
-    try{
-      String[] split;
-      split = dataIn.split(",");
-      for(int i = 0; i < dataSize && i < split.length; i++){
-        serialData[i] = parseFloat(split[i]);
-        //Use this for debugging
-        //print("" + serialData[i] + " ");
-      }
-      //this too
-      //println()
+  
+  try{
+    String[] split;
+    split = dataIn.split(",");
+    for(int i = 0; i < dataSize; i++){
+      serialData[i] = parseInt(split[i]);
     }
-    catch(Exception e){print("something went wrong trying to read the serial data");}
   }
+  catch(Exception e){println("something went wrong trying to read the serial data");}
 }

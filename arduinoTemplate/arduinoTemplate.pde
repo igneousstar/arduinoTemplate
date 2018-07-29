@@ -19,12 +19,23 @@ String dataIn;
 * if you modify the amount of data
 * being read from the Arduino. 
 */
-static final int dataSize = 1;
+static final int dataSize = 10;
 
 /**
 * The incomeing serial data
 */
 float[] serialData;
+
+/**
+* The amount of data being sent
+* modify to send more to the Arduino
+*/
+static final int sentDataSize = 10;
+
+/**
+*
+*/
+float[] sentData;
 
 /**
 * A timer for different actions
@@ -50,10 +61,17 @@ Gauge gauge;
 void setup(){
   //start the incoming data array
   serialData = new float[dataSize];
+  
+  //start the outgoing data array
+  sentData = new float[sentDataSize];
   //get rid of all the null pointers
-  //in the array
+  //in the arrays
   for(int i = 0; i < dataSize; i++){
     serialData[i] = 0;
+  }
+  
+  for(int i = 0; i < sentDataSize; i++){
+    sentData[i] = 0;
   }
   
   /** 
@@ -121,8 +139,9 @@ void setup(){
   
   //start the timer for comSelect
   timer = millis() -3000; 
+  
+  //set the window and background
   size(1400, 700);
-  textSize(32);
   background(#044f6f);
 }
 
@@ -134,23 +153,31 @@ void draw(){
     selectCom();
   }
   else{
-    //read the data
+    /*********************** read all the incoming data **********************/
     readSerial();
     
-    //set the new values
-    //the setValues() requires
-    //an array hence having to 
+    /******************** do things with the data recieved *******************/
+    
+    //the setValues(float[] values) requires
+    //an array so one is made here
     float[] graphData = {serialData[0], slider.getValues()[0]};
     graph.setValues(graphData);
     gauge.setValues(serialData[0]);
     
-    //draw the user interface
-    button.drawUI();
-    slider.drawUI();
-    gauge.drawUI();
-    graph.drawUI();
+    /************************* draw the user interface ***********************/
+    button.drawUI(); 
+    slider.drawUI(); 
+    gauge.drawUI(); 
+    graph.drawUI(); 
     
-    //send the serial data, use the same
-    myPort.write("" + button.getValues()[0] + ", " + slider.getValues()[0]);
+    /*********** update the data that is being sent to the arduino ***********/
+    sentData[0] = button.getValues()[0];
+    sentData[1] = slider.getValues()[0];
+    
+    /******************* send the new data to the arduino ********************/
+    writeSerial();
+    
+    /*********************** use this for debugging **************************/
+    //printSerialData();
   }
 }
